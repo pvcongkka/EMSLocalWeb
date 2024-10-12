@@ -107,3 +107,4 @@ window.onload = function () {
             lineChart.render();
         });
 };
+

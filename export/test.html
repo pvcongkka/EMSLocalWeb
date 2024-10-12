@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>emsdownoad</title>
+    <title>Device Management</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Be+Vietnam+Pro&amp;display=swap">
     <link rel="stylesheet" href="assets/css/ant-Design.css">
@@ -17,16 +17,16 @@
 <body>
     <div class="ant-tabs-content-holder">
         <div class="ant-tabs-content ant-tabs-content-top">
-            <div role="tabpanel" tabindex="0" aria-hidden="false" class="ant-tabs-tabpane ant-tabs-tabpane-active" id="rc-tabs-20-panel-Devices" aria-labelledby="rc-tabs-20-tab-Devices">
+            <div id="rc-tabs-20-panel-Devices" class="ant-tabs-tabpane ant-tabs-tabpane-active" role="tabpanel" tabindex="0" aria-hidden="false" aria-labelledby="rc-tabs-20-tab-Devices">
                 <div class="page-container">
                     <div class="sub-title-wrap">
-                        <h3 class="page-sub-title">Device management</h3>
+                        <h3 class="page-sub-title">Device Management</h3>
                         <form class="ant-form ant-form-inline css-xhucz1">
                             <div class="ant-form-item css-xhucz1">
                                 <div class="ant-row ant-form-item-row css-xhucz1">
                                     <div class="ant-col ant-form-item-control css-xhucz1">
                                         <div class="ant-form-item-control-input">
-                                            <div class="ant-form-item-control-input-content"><button type="button" class="ant-btn css-xhucz1 ant-btn-primary add-btn"><i class="cus-icon iAdd"></i></button></div>
+                                            <div class="ant-form-item-control-input-content"><button id="add-device-btn" class="ant-btn css-xhucz1 ant-btn-primary add-btn" type="button"><i class="cus-icon iAdd"></i> Add Device </button></div>
                                         </div>
                                     </div>
                                 </div>
@@ -38,168 +38,52 @@
                             <div class="ant-table-wrapper css-xhucz1">
                                 <div class="ant-spin-nested-loading css-xhucz1">
                                     <div class="ant-spin-container">
-                                        <div class="ant-table css-xhucz1 ant-table-scroll-horizontal" id="device-table">
+                                        <div id="device-table-1" class="ant-table css-xhucz1 ant-table-scroll-horizontal">
                                             <div class="ant-table-container">
-                                                <div class="ant-table-content" style="overflow:auto hidden;"><table style="width:fit-content;min-width:100%;table-layout:auto;">
-                          <colgroup></colgroup>
-                          <thead class="ant-table-thead">
-                            <tr>
-                              <th class="ant-table-cell" scope="col">
-                                Device name
-                              </th>
-                              <th class="ant-table-cell" scope="col">
-                                Device type
-                              </th>
-                              <th class="ant-table-cell" scope="col">
-                                Serial number
-                              </th>
-                              <th class="ant-table-cell" scope="col">Model</th>
-                              <th class="ant-table-cell" scope="col">Status</th>
-                              <th class="ant-table-cell" scope="col">
-                                Software
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody class="ant-table-tbody">
-                            <tr aria-hidden="true" class="ant-table-measure-row" style="height:0px;font-size:0px;">
-                              <td style="padding:0px;border:0px;height:0px;">
-                                <div style="height:0px;overflow:hidden;">
-                                  &nbsp;
-                                </div>
-                              </td>
-                              <td style="padding:0px;border:0px;height:0px;">
-                                <div style="height:0px;overflow:hidden;">
-                                  &nbsp;
-                                </div>
-                              </td>
-                              <td style="padding:0px;border:0px;height:0px;">
-                                <div style="height:0px;overflow:hidden;">
-                                  &nbsp;
-                                </div>
-                              </td>
-                              <td style="padding:0px;border:0px;height:0px;">
-                                <div style="height:0px;overflow:hidden;">
-                                  &nbsp;
-                                </div>
-                              </td>
-                              <td style="padding:0px;border:0px;height:0px;">
-                                <div style="height:0px;overflow:hidden;">
-                                  &nbsp;
-                                </div>
-                              </td>
-                              <td style="padding:0px;border:0px;height:0px;">
-                                <div style="height:0px;overflow:hidden;">
-                                  &nbsp;
-                                </div>
-                              </td>
-                            </tr>
-                            <tr class="ant-table-row ant-table-row-level-0" data-row-key="9dd3093c-c58a-4c8f-8346-3f764434cf13">
-                              <td class="ant-table-cell">
-                                <a class="ems-link" href="/ess/9e858157-2597-4c01-a754-76b2df7d5b5e/device/9dd3093c-c58a-4c8f-8346-3f764434cf13">Solar</a>
-                              </td>
-                              <td class="ant-table-cell">SOLAR</td>
-                              <td class="ant-table-cell">0</td>
-                              <td class="ant-table-cell"></td>
-                              <td class="ant-table-cell">
-                                <span class="ems-status ems-status-Disable"></span>
-                              </td>
-                              <td class="ant-table-cell"><span>-</span></td>
-                            </tr>
-                            <tr class="ant-table-row ant-table-row-level-0" data-row-key="d92a8855-4472-4341-aef3-fc1ba7720c16">
-                              <td class="ant-table-cell">
-                                <a class="ems-link" href="/ess/9e858157-2597-4c01-a754-76b2df7d5b5e/device/d92a8855-4472-4341-aef3-fc1ba7720c16">ESS - Beta - PSC</a>
-                              </td>
-                              <td class="ant-table-cell">Power source</td>
-                              <td class="ant-table-cell">0</td>
-                              <td class="ant-table-cell"></td>
-                              <td class="ant-table-cell">
-                                <span class="ems-status ems-status-Enable"></span>
-                              </td>
-                              <td class="ant-table-cell"><span>-</span></td>
-                            </tr>
-                            <tr class="ant-table-row ant-table-row-level-0" data-row-key="47607d78-a9dd-432d-8219-8568bae812a8">
-                              <td class="ant-table-cell">
-                                <a class="ems-link" href="/ess/9e858157-2597-4c01-a754-76b2df7d5b5e/device/47607d78-a9dd-432d-8219-8568bae812a8">ESS - Beta - Generator</a>
-                              </td>
-                              <td class="ant-table-cell">Generator</td>
-                              <td class="ant-table-cell">0</td>
-                              <td class="ant-table-cell"></td>
-                              <td class="ant-table-cell">
-                                <span class="ems-status ems-status-Disable"></span>
-                              </td>
-                              <td class="ant-table-cell"><span>-</span></td>
-                            </tr>
-                            <tr class="ant-table-row ant-table-row-level-0" data-row-key="443abfb5-236f-489d-83ee-dfe25f295469">
-                              <td class="ant-table-cell">
-                                <a class="ems-link" href="/ess/9e858157-2597-4c01-a754-76b2df7d5b5e/device/443abfb5-236f-489d-83ee-dfe25f295469">HVAC</a>
-                              </td>
-                              <td class="ant-table-cell">HVAC</td>
-                              <td class="ant-table-cell">0</td>
-                              <td class="ant-table-cell"></td>
-                              <td class="ant-table-cell">
-                                <span class="ems-status ems-status-Enable"></span>
-                              </td>
-                              <td class="ant-table-cell"><span>-</span></td>
-                            </tr>
-                            <tr class="ant-table-row ant-table-row-level-0" data-row-key="91af7e95-cfc4-42ab-9863-d792a38e0db2">
-                              <td class="ant-table-cell">
-                                <a class="ems-link" href="/ess/9e858157-2597-4c01-a754-76b2df7d5b5e/device/91af7e95-cfc4-42ab-9863-d792a38e0db2">ESS - Beta - Grid</a>
-                              </td>
-                              <td class="ant-table-cell">Grid</td>
-                              <td class="ant-table-cell">0</td>
-                              <td class="ant-table-cell"></td>
-                              <td class="ant-table-cell">
-                                <span class="ems-status ems-status-Enable"></span>
-                              </td>
-                              <td class="ant-table-cell"><span>-</span></td>
-                            </tr>
-                            <tr class="ant-table-row ant-table-row-level-0" data-row-key="482ec7cf-79b8-457f-9f7e-457f7192dcbc">
-                              <td class="ant-table-cell">
-                                <a class="ems-link" href="/ess/9e858157-2597-4c01-a754-76b2df7d5b5e/device/482ec7cf-79b8-457f-9f7e-457f7192dcbc">ESS - Beta - Battery</a>
-                              </td>
-                              <td class="ant-table-cell">Battery Pack</td>
-                              <td class="ant-table-cell">0</td>
-                              <td class="ant-table-cell"></td>
-                              <td class="ant-table-cell">
-                                <span class="ems-status ems-status-Enable"></span>
-                              </td>
-                              <td class="ant-table-cell"><span>-</span></td>
-                            </tr>
-                            <tr class="ant-table-row ant-table-row-level-0" data-row-key="4516f165-63d3-46b7-aeae-3bf46ee1fa5b">
-                              <td class="ant-table-cell">
-                                <a class="ems-link" href="/ess/9e858157-2597-4c01-a754-76b2df7d5b5e/device/4516f165-63d3-46b7-aeae-3bf46ee1fa5b">ESS - Beta - Inverter</a>
-                              </td>
-                              <td class="ant-table-cell">Inverter</td>
-                              <td class="ant-table-cell">0</td>
-                              <td class="ant-table-cell"></td>
-                              <td class="ant-table-cell">
-                                <span class="ems-status ems-status-Enable"></span>
-                              </td>
-                              <td class="ant-table-cell"><span>-</span></td>
-                            </tr>
-                          </tbody>
-                        </table></div>
+                                                <div class="ant-table-content" style="overflow:auto hidden;"><table id="device-table" style="width:fit-content;min-width:100%;table-layout:auto;">
+                              <colgroup></colgroup>
+                              <thead class="ant-table-thead">
+                                <tr>
+                                  <th class="ant-table-cell" scope="col">
+                                    Device Name
+                                  </th>
+                                  <th class="ant-table-cell" scope="col">
+                                    Device Type
+                                  </th>
+                                  <th class="ant-table-cell" scope="col">
+                                    Serial Number
+                                  </th>
+                                  <th class="ant-table-cell" scope="col">
+                                    Model
+                                  </th>
+                                  <th class="ant-table-cell" scope="col">
+                                    Status
+                                  </th>
+                                  <th class="ant-table-cell" scope="col">
+                                    Software
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody id="device-table-body" class="ant-table-tbody">
+                                
+                                <tr class="ant-table-row ant-table-row-level-0">
+                                  <td class="ant-table-cell">
+                                    <a class="ems-link" href="#">Solar</a>
+                                  </td>
+                                  <td class="ant-table-cell">SOLAR</td>
+                                  <td class="ant-table-cell">0</td>
+                                  <td class="ant-table-cell"></td>
+                                  <td class="ant-table-cell">
+                                    <span class="ems-status ems-status-Disable"></span>
+                                  </td>
+                                  <td class="ant-table-cell"><span>-</span></td>
+                                </tr>
+                              </tbody>
+                            </table></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div><br>
-                    <div class="ant-row css-xhucz1">
-                        <div class="ant-col ant-col-24 paging-wrap css-xhucz1">
-                            <div style="margin:0px auto 15px;display:flex;align-items:center;">
-                                <ul class="ant-pagination css-xhucz1">
-                                    <li class="ant-pagination-total-text">1-7 of 7</li>
-                                    <li title="Previous Page" class="ant-pagination-prev ant-pagination-disabled" aria-disabled="true"><button class="disabled ant-pagination-item-link" type="button" tabindex="-1" disabled=""><span role="img" aria-label="left" class="anticon anticon-left"><svg viewbox="64 64 896 896" data-icon="left" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"></path></svg></span></button></li>
-                                    <li title="1" class="ant-pagination-item ant-pagination-item-1 ant-pagination-item-active" tabindex="0"><a rel="nofollow">1</a></li>
-                                    <li title="Next Page" class="ant-pagination-next ant-pagination-disabled" aria-disabled="true"><button class="disabled ant-pagination-item-link" type="button" tabindex="-1" disabled=""><span role="img" aria-label="right" class="anticon anticon-right"><svg viewbox="64 64 896 896" data-icon="right" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"></path></svg></span></button></li>
-                                    <li class="ant-pagination-options">
-                                        <div class="ant-select ant-select-outlined ant-pagination-options-size-changer css-xhucz1 ant-select-single ant-select-show-arrow ant-select-show-search" aria-label="Page Size">
-                                            <div class="ant-select-selector"><span class="ant-select-selection-search"><input type="search" aria-autocomplete="list" aria-controls="rc_select_44_list" aria-expanded="false" aria-haspopup="listbox" aria-label="Page Size" aria-owns="rc_select_44_list" autocomplete="off" class="ant-select-selection-search-input" id="rc_select_44" role="combobox" value=""></span><span class="ant-select-selection-item" title="10 ">10 </span></div><span class="ant-select-arrow" aria-hidden="true" style="user-select:none;"><span role="img" aria-label="down" class="anticon anticon-down ant-select-suffix"><svg viewbox="64 64 896 896" data-icon="down" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"></path></svg></span></span>
-                                        </div>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -207,10 +91,62 @@
             </div>
         </div>
     </div>
+    <div id="device-modal" class="modal">
+        <div class="modal-content"><span class="close" id="close-modal">×</span>
+            <h2>Add New Device</h2><label for="device-name">Device Name:</label><input type="text" id="device-name"><br><br><label for="device-type">Device Type:</label><input type="text" id="device-type"><br><br><label for="serial-number">Serial Number:</label><input type="text" id="serial-number"><br><br><label for="model">Model:</label><input type="text" id="model"><br><br><label for="status">Status:</label><select id="status">
+                <option value="Enable">Enable</option>
+                <option value="Disable">Disable</option>
+            </select><br><br><button id="save-device-btn">Save Device</button>
+        </div>
+    </div><script>
+      // Hiển thị hộp thoại
+      const modal = document.getElementById("device-modal");
+      const addDeviceBtn = document.getElementById("add-device-btn");
+      const closeModalBtn = document.getElementById("close-modal");
+      const saveDeviceBtn = document.getElementById("save-device-btn");
+      const deviceTableBody = document.getElementById("device-table-body");
+
+      addDeviceBtn.onclick = function () {
+        modal.style.display = "block"; // Hiện hộp thoại
+      };
+
+      closeModalBtn.onclick = function () {
+        modal.style.display = "none"; // Ẩn hộp thoại
+      };
+
+      window.onclick = function (event) {
+        if (event.target === modal) {
+          modal.style.display = "none"; // Ẩn hộp thoại khi nhấp ra ngoài
+        }
+      };
+
+      saveDeviceBtn.onclick = function () {
+        const deviceName = document.getElementById("device-name").value;
+        const deviceType = document.getElementById("device-type").value;
+        const serialNumber = document.getElementById("serial-number").value;
+        const model = document.getElementById("model").value;
+        const status = document.getElementById("status").value;
+
+        const newRow = `
+                <tr class="ant-table-row ant-table-row-level-0">
+                    <td class="ant-table-cell"><a class="ems-link" href="#">${deviceName}</a></td>
+                    <td class="ant-table-cell">${deviceType}</td>
+                    <td class="ant-table-cell">${serialNumber}</td>
+                    <td class="ant-table-cell">${model}</td>
+                    <td class="ant-table-cell"><span class="ems-status ems-status-${
+                      status === "Enable" ? "Enable" : "Disable"
+                    }"></span></td>
+                    <td class="ant-table-cell"><span>-</span></td>
+                </tr>`;
+        deviceTableBody.insertAdjacentHTML("beforeend", newRow);
+        modal.style.display = "none"; // Ẩn hộp thoại sau khi lưu
+      };
+    </script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/antd.min.js"></script>
     <script src="assets/js/g2plot.min.js"></script>
+    <script src="assets/js/lightweight-charts.standalone.production.js"></script>
     <script src="assets/js/helper.js"></script>
     <script src="assets/js/scriptControlTab.js"></script>
     <script src="assets/js/scriptReportTab.js"></script>

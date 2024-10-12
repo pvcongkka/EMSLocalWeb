@@ -1,11 +1,11 @@
-const express = require("express");
+	const express = require("express");
 const bodyParser = require("body-parser");
 const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs");
 const path = require("path");
 const app = express();
 const port = 8081;
-
+let lastRowId = 0; 
 app.use(express.static(path.join(__dirname, "/")));
 
 app.use(bodyParser.json());
@@ -36,7 +36,9 @@ const db = new sqlite3.Database("data.db", (err) => {
     );
   }
 });
-
+function getDbSize() {
+    return fs.statSync("data.db").size;
+}
 app.post("/submit", (req, res) => {
   const data = req.body.newData; // Get data from client
   const id = data.id; // Assume you have an ID to identify the record to update
@@ -121,7 +123,151 @@ app.get("/get_users", function (req, res) {
     res.json(rows);
   });
 });
+// API to save data
+app.post("/api/save-data", (req, res) => {
+  const { time, charge_power, discharge_power } = req.body;
+
+  const query =
+    "INSERT INTO power_data (time, charge_power, discharge_power) VALUES (?, ?, ?)";
+  db.run(query, [time, charge_power, discharge_power], function (err) {
+    if (err) {
+      console.error("Error saving data:", err.message);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res
+      .status(200)
+      .json({ message: "Data saved successfully", id: this.lastID });
+  });
+});
+
+// Endpoint to fetch data
+app.get("/api/get-data", (req, res) => {
+  db.all(`SELECT * FROM power_data`, [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(rows);
+  });
+});
+// API to save battery data
+app.post("/api/save-batterydata", (req, res) => {
+  const {
+  	time,
+    Battery_rack_current,
+    Battery_rack_voltage,
+    Battery_rack_Charge_power,
+    Battery_rack_DisCharge_power,
+    Total_Battery_Charge_Energy_of_life_cycle,
+    Total_Battery_Discharge_Energy_of_life_cycle,
+    Lowest_cell_voltage,
+    Highest_cell_voltage,
+    Min_cell_temperature,
+    Max_cell_temperature,
+    ID_of_lowest_cell_voltage,
+    ID_of_highest_cell_voltage,
+    ID_of_min_cell_temperature,
+    ID_of_max_cell_temperature,
+    SoC_of_rack,
+    SoH_of_rack,
+    DC_insulation_resistance
+  } = req.body.batteryData;
+
+  if (!Battery_rack_current || !Battery_rack_voltage) {
+    return res.status(400).json({ message: "Invalid data" });
+  }
+
+  db.run(`
+    INSERT INTO battery_data (
+      time,
+      Battery_rack_current,
+      Battery_rack_voltage,
+      Battery_rack_Charge_power,
+      Battery_rack_DisCharge_power,
+      Total_Battery_Charge_Energy_of_life_cycle,
+      Total_Battery_Discharge_Energy_of_life_cycle,
+      Lowest_cell_voltage,
+      Highest_cell_voltage,
+      Min_cell_temperature,
+      Max_cell_temperature,
+      ID_of_lowest_cell_voltage,
+      ID_of_highest_cell_voltage,
+      ID_of_min_cell_temperature,
+      ID_of_max_cell_temperature,
+      SoC_of_rack,
+      SoH_of_rack,
+      DC_insulation_resistance
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `, [
+    time,
+    Battery_rack_current,
+    Battery_rack_voltage,
+    Battery_rack_Charge_power,
+    Battery_rack_DisCharge_power,
+    Total_Battery_Charge_Energy_of_life_cycle,
+    Total_Battery_Discharge_Energy_of_life_cycle,
+    Lowest_cell_voltage,
+    Highest_cell_voltage,
+    Min_cell_temperature,
+    Max_cell_temperature,
+    ID_of_lowest_cell_voltage,
+    ID_of_highest_cell_voltage,
+    ID_of_min_cell_temperature,
+    ID_of_max_cell_temperature,
+    SoC_of_rack,
+    SoH_of_rack,
+    DC_insulation_resistance
+  ], (err) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ message: "Failed to save data" });
+    }
+
+    res.status(200).json({ message: "Data saved successfully" });
+  });
+});
+function fetchChangedData(callback) {
+  db.all(
+    `SELECT * FROM battery_data WHERE id > ?`, 
+    lastRowId,
+    (err, rows) => {
+      if (err) {
+        console.error(err);
+        callback([]);
+        return;
+      }
+
+      if (rows.length > 0) {
+        lastRowId = rows[rows.length - 1].id; 
+      }
+
+
+      callback(rows);
+    }
+  );
+}
+// Endpoint to fetch battery data
+app.get("/api/get-batterydata", (req, res) => {
+  db.all(`SELECT * FROM battery_data`, [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(rows);
+
+  });
+});
+// Endpoint to fetch changed battery data
+app.get('/api/get-changed-batterydata', (req, res) => {
+
+  fetchChangedData((data) => {
+    res.json(data);
+    
+  });
+});
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+});
+process.on('SIGINT', () => {
+  db.close();
+  process.exit();
 });

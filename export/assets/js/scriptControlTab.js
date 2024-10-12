@@ -74,11 +74,9 @@ rcTabs8PanelSolar = {
 document.addEventListener("DOMContentLoaded", function () {
   // JavaScript to switch between tabs
 
-  const tabs = document.querySelectorAll(
-    `#${div - control - tab} .ant-tabs-tab-btn`
-  );
+  const tabs = document.querySelectorAll('#div_control_tab .ant-tabs-tab-btn');
   const panels = document.querySelectorAll(
-    `#${div - control - tab} .ant-tabs-tabpane`
+    `#div_control_tab .ant-tabs-tabpane`
   );
 
   if (tabs.length > 0 && panels.length > 0) {

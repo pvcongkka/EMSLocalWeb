@@ -104,7 +104,7 @@
                                             <div class="d-flex justify-content-between ant-tabs-nav-list" style="transform: translate(0px);width: 545.703px;">
                                                 <div data-node-key="Report" class="ant-tabs-tab ant-tabs-tab-active" style="border-bottom-style: groove;border-bottom-color: #133bbb;"><a href="index.html"><strong><span style="color: rgb(10, 88, 202);">Report</span></strong></a></div>
                                                 <div data-node-key="Economy" class="ant-tabs-tab"><a href="#"><span style="color: rgb(3, 3, 33);">Economy</span></a></div>
-                                                <div data-node-key="Devices" class="ant-tabs-tab"><a href="#"><span style="color: rgb(3, 3, 33);">Devices</span></a></div>
+                                                <div data-node-key="Devices" class="ant-tabs-tab"><a href="device/devicemenu.html"><span style="color: rgb(3, 3, 33);">Devices</span></a></div>
                                                 <div data-node-key="Control" class="ant-tabs-tab"><a href="control.html"><span style="color: rgb(3, 3, 33);">Control</span></a></div>
                                                 <div data-node-key="Warnings" class="ant-tabs-tab"><a href="#"><span style="color: rgb(3, 3, 33);">Warnings</span></a></div>
                                                 <div data-node-key="FOTA" class="ant-tabs-tab"><a href="#"><span style="color: rgb(3, 3, 33);">FOTA</span></a></div>
@@ -285,7 +285,7 @@
                                                     </div>
                                                     <div style="padding:20px;box-shadow:rgba(0, 0, 0, 0.08) 0px 0px 8px;border-radius:8px;">
                                                         <form class="ant-form ant-form-vertical css-xhucz1">
-                                                            <div class="ant-row css-xhucz1">
+                                                            <div class="d-block ant-row css-xhucz1">
                                                                 <div class="d-flex justify-content-start ant-col ant-col-12 css-xhucz1" style="display:flex;justify-content:flex-end;">
                                                                     <div class="ant-form-item css-xhucz1" style="margin-bottom:0px;">
                                                                         <div class="ant-row ant-form-item-row css-xhucz1">
@@ -306,9 +306,294 @@
                                                             </div>
                                                         </form>
                                                         <div style="height:inherit;" data-chart-source-type="G2Plot">
-                                                            <div style="position:relative;">      <h3 style="text-align: center">Battery rack power today</h3>
-      <!-- Line Chart Container -->
-      <div id="lineChart" style="width: 100%; height: 500px"></div>
+                                                            <div style="position:relative;"><head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Line Chart </title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+    }
+
+    /* Chart container styling */
+    #line-chart {
+      width: 100%;
+      height: 500px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    /* Legend styling */
+    #legend {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0;
+    }
+
+    .legend-item {
+      margin: 0 15px;
+      font-size: 16px;
+      cursor: pointer; /* Change cursor to pointer */
+      transition: opacity 0.3s ease; /* Smooth transition for opacity */
+    }
+
+    .color-box {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 5px;
+    }
+
+    .disabled {
+      opacity: 0.5; /* Make legend item semi-transparent */
+    }
+  </style>
+
+  <!-- Include Lightweight Charts library -->
+  <script src="/assets/js/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+  <h1>Line Chart</h1>
+
+  <!-- Chart container -->
+  <div id="line-chart"></div>
+
+  <!-- Legend container -->
+  <div id="legend">
+    <div class="legend-item" id="charge-legend">
+      <span class="color-box" style="background-color: #ff6347"></span>
+      Battery Charge Power (kW)
+    </div>
+    <div class="legend-item" id="discharge-legend">
+      <span class="color-box" style="background-color: #4682b4"></span>
+      Battery Discharge Power (kW)
+    </div>
+  </div>
+
+  <script>
+    // Get chart container element
+    const chartElement = document.getElementById("line-chart");
+
+    // Initialize the chart
+    const chart = LightweightCharts.createChart(chartElement, {
+      width: chartElement.clientWidth, // Get the width of the container
+      height: 500, // Set fixed height
+      layout: {
+        backgroundColor: "#ffffff",
+        textColor: "#000000",
+      },
+      grid: {
+        vertLines: {
+          color: "#e1e1e1",
+        },
+        horzLines: {
+          color: "#e1e1e1",
+        },
+      },
+      priceScale: {
+        borderColor: "#e1e1e1",
+      },
+      timeScale: {
+        borderColor: "#e1e1e1",
+        timeVisible: true,
+        secondsVisible: true,
+      },
+      crosshair: {
+        mode: LightweightCharts.CrosshairMode.Normal,
+      },
+    });
+
+    // Create the first line series
+    const chargePowerSeries = chart.addLineSeries({
+      color: "#ff6347", // Tomato red color
+      lineWidth: 2,
+    });
+
+    // Create the second line series
+    const dischargePowerSeries = chart.addLineSeries({
+      color: "#4682b4", // Steel blue color
+      lineWidth: 2,
+    });
+
+    // Initial data (starting with empty array)
+    let chargePowerData = [];
+    let dischargePowerData = [];
+    let isChargeVisible = true; // Visibility state for charge series
+    let isDischargeVisible = true; // Visibility state for discharge series
+    let currentTime = Date.now();
+
+    // Function to get current time in Unix timestamp
+    function getCurrentUnixTime() {
+      return Math.floor(Date.now() / 1000); // Get Unix timestamp (seconds)
+      //currentTime += 1 * 1000;
+      return currentTime;
+    }
+
+    // Function to generate a new data point for Charge Power
+    function generateNewChargeDataPoint() {
+      const currentTime = getCurrentUnixTime();
+      const newValue = Math.random() * 100; // Generate a random value
+      return { time: currentTime, value: newValue };
+    }
+
+    // Function to generate a new data point for Discharge Power
+    function generateNewDischargeDataPoint() {
+      const currentTime = getCurrentUnixTime();
+      const newValue = Math.random() * 150; // Generate a random value for discharge
+      return { time: currentTime, value: newValue };
+    }
+
+    // Function to save data to the database
+    function saveDataToDatabase(time, charge_power, discharge_power) {
+      fetch("/api/save-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          time: time,
+          charge_power: charge_power,
+          discharge_power: discharge_power,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {})
+        .catch((error) => {
+          console.error("Error saving data:", error);
+        });
+    }
+    // Function to fetch data from the database
+    function fetchDataFromDatabase() {
+      fetch("/api/get-data")
+        .then((response) => response.json())
+        .then((data) => {
+          // Initialize previous time for charge and discharge series
+          let previousChargeTime = 0;
+          let previousDischargeTime = 0;
+
+          // Filter and map charge power data, ensuring validity and increasing time
+          const filteredChargeData = data
+            .filter((item, index) => {
+              const isValid =
+                item.time != null && // Ensure time is not null
+                item.charge_power != null && // Ensure charge power is not null
+                typeof item.charge_power === "number" && // Ensure charge power is a valid number
+                item.time > previousChargeTime; // Ensure time is increasing
+
+              if (isValid) {
+                previousChargeTime = item.time; // Update previous valid time
+                return true; // Include this valid item
+              } else {
+                return false; // Skip this invalid item
+              }
+            })
+            .map((item) => ({
+              time: item.time,
+              value: item.charge_power,
+            }));
+
+          // Filter and map discharge power data, ensuring validity and increasing time
+          const filteredDischargeData = data
+            .filter((item, index) => {
+              const isValid =
+                item.time != null && // Ensure time is not null
+                item.discharge_power != null && // Ensure discharge power is not null
+                typeof item.discharge_power === "number" && // Ensure discharge power is a valid number
+                item.time > previousDischargeTime; // Ensure time is increasing
+
+              if (isValid) {
+                previousDischargeTime = item.time; // Update previous valid time
+                return true; // Include this valid item
+              } else {
+                return false; // Skip this invalid item
+              }
+            })
+            .map((item) => ({
+              time: item.time,
+              value: item.discharge_power,
+            }));
+
+          // Store filtered data to series for toggling visibility
+          chargePowerSeries.data = filteredChargeData;
+          dischargePowerSeries.data = filteredDischargeData;
+
+          // Update chart with filtered data if series are visible
+          if (isChargeVisible) {
+            chargePowerSeries.setData(chargePowerSeries.data);
+          }
+          if (isDischargeVisible) {
+            dischargePowerSeries.setData(dischargePowerSeries.data);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }
+
+    // Function to add new data every 2 seconds
+    setInterval(() => {
+      const newChargeDataPoint = generateNewChargeDataPoint();
+      const newDischargeDataPoint = generateNewDischargeDataPoint();
+
+      // Save data to the database
+      saveDataToDatabase(
+        newChargeDataPoint.time,
+        newChargeDataPoint.value,
+        newDischargeDataPoint.value
+      );
+
+      // Update both series with new data points only if they are visible
+      fetchDataFromDatabase();
+    }, 200);
+
+    // Function to toggle visibility of a series
+    function toggleSeriesVisibility(series, isVisible, legendItem, data) {
+      if (isVisible) {
+        series.setData(data); // Show series data
+        legendItem.classList.remove("disabled"); // Remove disabled class
+      } else {
+        series.setData([]); // Hide series data
+        legendItem.classList.add("disabled"); // Add disabled class
+      }
+    }
+
+    // Add event listeners for click on legend items
+    const chargeLegendItem = document.getElementById("charge-legend");
+    chargeLegendItem.addEventListener("click", () => {
+      isChargeVisible = !isChargeVisible; // Toggle visibility state
+      toggleSeriesVisibility(
+        chargePowerSeries,
+        isChargeVisible,
+        chargeLegendItem,
+        chargePowerData
+      ); // Toggle series visibility
+    });
+
+    const dischargeLegendItem = document.getElementById("discharge-legend");
+    dischargeLegendItem.addEventListener("click", () => {
+      isDischargeVisible = !isDischargeVisible; // Toggle visibility state
+      toggleSeriesVisibility(
+        dischargePowerSeries,
+        isDischargeVisible,
+        dischargeLegendItem,
+        dischargePowerData
+      ); // Toggle series visibility
+    });
+
+    // Ensure chart resizes with the window
+    window.addEventListener("resize", () => {
+      chart.resize(chartElement.clientWidth, 500);
+    });
+  </script>
+</body>
+
                                                                 <div class="g2-tooltip" style="position:absolute;visibility:hidden;z-index:8;transition:left 0.4s
                                           cubic-bezier(0.23, 1, 0.32, 1),
                                         top 0.4s cubic-bezier(0.23, 1, 0.32, 1);background-color:rgb(255, 255, 255);box-shadow:rgb(174, 174, 174) 0px 0px
@@ -339,6 +624,7 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/antd.min.js"></script>
     <script src="assets/js/g2plot.min.js"></script>
+    <script src="assets/js/lightweight-charts.standalone.production.js"></script>
     <script src="assets/js/helper.js"></script>
     <script src="assets/js/scriptControlTab.js"></script>
     <script src="assets/js/scriptReportTab.js"></script>
